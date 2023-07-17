@@ -23,7 +23,7 @@ public class TelegramProgramService {
     /**
      * listProgramForBeginners-содержит программы тренеровок для новичков
      */
-    private ArrayList<String> listProgramForBeginners = new ArrayList<>(Arrays.asList("\"АНДЕРСОН (ANDERSON)\\n\" +\n" +
+    private final ArrayList<String> listProgramForBeginners = new ArrayList<>(Arrays.asList("\"АНДЕРСОН (ANDERSON)\\n\" +\n" +
                     "                \"ЗКМБР - 20 МИНУТ (AMRAP): \\n\" +\n" +
                     "                \"- 5 бурпи \\n\" +\n" +
                     "                \"- 10 отжимания от пола \\n\" +\n" +
@@ -43,9 +43,9 @@ public class TelegramProgramService {
 
 
     /**
-     * getListWithoutImplements-содержит программы тренеровок без инструмента с собственным весом
+     * listWithoutImplements-содержит программы тренеровок без инструмента с собственным весом
      */
-    private ArrayList<String> getListWithoutImplements = new ArrayList<>(Arrays.asList(
+    private final ArrayList<String> listWithoutImplements = new ArrayList<>(Arrays.asList(
             "WOD 1\n" +
                     "5 раундов на время:\n" +
                     "\n" +
@@ -199,6 +199,21 @@ public class TelegramProgramService {
 
     /**
 
+     Генерирует случайную программу без оборудования и отправляет её в виде сообщения по указанному идентификатору чата.
+
+     @param chatId идентификатор чата, куда будет отправленная программа
+     */
+    public void getRandomWithoutImplements(Long chatId) {
+        Random random1 = new Random();
+
+        int randomIndex1 = random1.nextInt(listWithoutImplements.size());
+
+        String randomElement1 = listWithoutImplements.get(randomIndex1);
+
+        telegramBot.execute(new SendMessage(chatId, randomElement1));
+    }
+    /**
+
      Генерирует случайную программу для начинающих и отправляет её в виде сообщения по указанному идентификатору чата.
 
      @param chatId идентификатор чата, куда будет отправленная программа
@@ -213,10 +228,33 @@ public class TelegramProgramService {
         String randomElement = listProgramForBeginners.get(randomIndex);
 
 // Отправляем случайную программу в виде сообщения, используя telegramBot
-        telegramBot.execute(new SendMessage(chatId, listProgramForBeginners.get(randomIndex)));
+        telegramBot.execute(new SendMessage(chatId, randomElement));
     }
 
     public void getRandomProgramForPro(Long chatId) {
+        ArrayList<String> programForPro = new ArrayList<>(Arrays.asList("1. SUSAN (СЬЮЗАН)\n" +
+                "\n" +
+                "Выполнить 5 раундов на время: \n" +
+                "- бег 200 метров \n" +
+                "- 10 отжиманий от пола \n" +
+                "- 10 воздушных приседаний\n" +
+                "\n" +
+                "Кроссфит комплекс для самых начинающих атлетов. \n" +
+                "\n" +
+                "Все что вам понадобится - это четко выверенная дистанция 200 метров для бега, возможность отжиматься и приседать. \n" +
+                "Задача на первый взгляд крайне простая, но если бежать действительно быстро, то пульс будет крайне высоким, " +
+                "ведь это в общей сумме 1000 метров бега, а это одна из самых сложных дистанций в легкой атлетике."
+                ,
+                "АНДЕРСОН (ANDERSON)\n" +
+                "ЗКМБР - 20 МИНУТ (AMRAP): \n" +
+                "- 5 бурпи \n" +
+                "- 10 отжимания от пола \n" +
+                "- 15 ситапы \n" +
+                "- 20 воздушные приседания\n" +
+                "\n" +
+                "Долгая работа с весом собственного тела, данный комплекс покажет насколько долго вы сможете" +
+                " поддерживать интенсивность задания! Настоящая проверка на ментальную устойчивость!"));
+        telegramBot.execute(new SendMessage(chatId, programForPro.get(1)));
 
     }
 

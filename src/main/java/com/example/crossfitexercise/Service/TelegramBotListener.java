@@ -19,26 +19,27 @@ import java.util.List;
 @Data
 public class TelegramBotListener implements UpdatesListener {
 
-   @Autowired
-    private TelegramBot telegramBot;
+
+    private final TelegramBot telegramBot;
+
+    private final TelegramMotivationService telegramMotivationService;
 
     public static final String START = "/start";
     public static final String GET_PROGRAM_LEVEL_PRO = "Получить программу уровень pro";
     public static final String GET_MOTIVATION = "Получить мотивацию";
     public static final String GET_GLOSSARY = "Открыть кроссфит глоссарий";
     public static final String GET_PROGRAM_LEVEL_BEGINNER = "Получить программу уровень beginner";
-    public static final String GET_PROGRAM_WITHOUT_IMPLEMENTS = "Получить программу тренеровки" +
-            " без оборудования с собственным весом";
+    public static final String GET_PROGRAM_WITHOUT_IMPLEMENTS = "Получить программу тренеровки без оборудования с собственным весом";
 
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotListener.class);
 
 
-    @Autowired
-    private TelegramBotService telegramBotService;
+
+    private final TelegramBotService telegramBotService;
     private Long chatId;
-    @Autowired
-    private TelegramProgramService telegramProgramService;
+    private final TelegramProgramService telegramProgramService;
+
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
@@ -75,8 +76,12 @@ public class TelegramBotListener implements UpdatesListener {
                             switch (data) {
 
                                 case START -> telegramBotService.firstMenu(chatId);
-                                case GET_PROGRAM_LEVEL_PRO -> telegramProgramService.getRandomProgramForBeginners(chatId);
-//                                case GET_PROGRAM_LEVEL_BEGINNER ->telegramProgramService.getRandomProgramForBeginners(chatId);
+                                case GET_PROGRAM_LEVEL_PRO -> telegramProgramService.getRandomProgramForPro(chatId);
+                                case GET_PROGRAM_LEVEL_BEGINNER -> telegramProgramService.getRandomProgramForBeginners(chatId);
+                                case GET_PROGRAM_WITHOUT_IMPLEMENTS -> telegramProgramService.getRandomWithoutImplements(chatId);
+                                case GET_MOTIVATION -> telegramMotivationService.getRandomMotivate(chatId);
+                                case GET_GLOSSARY -> telegramProgramService.programAnderson(chatId);
+
                             }
 
                         }
@@ -90,10 +95,10 @@ public class TelegramBotListener implements UpdatesListener {
                         }
                     }
             );
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-    }
+}
 
