@@ -8,7 +8,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,14 +20,20 @@ public class TelegramBotListener implements UpdatesListener {
 
     private final TelegramMotivationService telegramMotivationService;
 
+    private final TelegramGlossaryService telegramGlossaryService;
+
 
     public static final String START = "/start";
     public static final String GET_PROGRAM_LEVEL_PRO = "Получить программу уровень pro";
     public static final String GET_MOTIVATION = "Получить совет";
     public static final String GET_GLOSSARY = "Открыть кроссфит глоссарий";
     public static final String GET_PROGRAM_LEVEL_BEGINNER = "Получить программу уровень beginner";
-    public static final String GET_PROGRAM_WITHOUT_IMPLEMENTS = "Получить программу тренеровки без оборудования с собственным весом";
+//    public static final String GET_PROGRAM_WITHOUT_IMPLEMENTS = "Получить программу тренеровки без оборудования с собственным весом";
     public static final String PROGRAM_WITHOUT = "Тренеровка без экипы";
+    public static final String VARIANTS_PROGRAM = "Разновидности программ";
+    public static final String GENERAL_TERMINS = "Общие термины";
+    public static final String VARIANTS_EXERCISE = "Разновидности упражнений";
+
 
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotListener.class);
@@ -40,9 +45,10 @@ public class TelegramBotListener implements UpdatesListener {
 
     private final TelegramProgramService telegramProgramService;
 
-    public TelegramBotListener(TelegramBot telegramBot, TelegramMotivationService telegramMotivationService, TelegramBotService telegramBotService, TelegramProgramService telegramProgramService) {
+    public TelegramBotListener(TelegramBot telegramBot, TelegramMotivationService telegramMotivationService, TelegramGlossaryService telegramGlossaryService, TelegramBotService telegramBotService, TelegramProgramService telegramProgramService) {
         this.telegramBot = telegramBot;
         this.telegramMotivationService = telegramMotivationService;
+        this.telegramGlossaryService = telegramGlossaryService;
         this.telegramBotService = telegramBotService;
         this.telegramProgramService = telegramProgramService;
     }
@@ -121,6 +127,10 @@ public int process(List<Update> updates) {
                 String data = callbackQuery.data();
 
                 switch (data) {
+                    case VARIANTS_PROGRAM:
+                        telegramGlossaryService.getProgram(chatId);
+                    case GENERAL_TERMINS:
+                        telegramGlossaryService.getCommonTermines(chatId);
                     case START:
                         telegramBotService.firstMenu(chatId);
                         break;
@@ -137,10 +147,11 @@ public int process(List<Update> updates) {
                         telegramMotivationService.getRandomMotivate(chatId);
                         break;
                     case GET_GLOSSARY:
-                        telegramProgramService.programAnderson(chatId);
+                        telegramBotService.glossaryMenu(chatId);
                         break;
                     case PROGRAM_WITHOUT:
                         telegramProgramService.getRandomWithoutImplements(chatId);
+
 
                 }
             }

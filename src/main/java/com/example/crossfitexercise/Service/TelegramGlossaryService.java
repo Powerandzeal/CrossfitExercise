@@ -1,5 +1,7 @@
 package com.example.crossfitexercise.Service;
 
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.List;
 
 @Service
 public class TelegramGlossaryService {
+
+   private final TelegramBot telegramBot;
     private final String program =
             "Разновидости программ:\n" +
                     "AMRAP  (as many Reps (sometimes Rounds) as possible/) - сделать как можно большее " +
@@ -131,5 +135,14 @@ public class TelegramGlossaryService {
                     "Wall Ball - броски мяча в стену "
     ));
 
+    public TelegramGlossaryService(TelegramBot telegramBot) {
+        this.telegramBot = telegramBot;
+    }
 
+    public void getProgram (Long chatId){
+        telegramBot.execute(new SendMessage(chatId,program));
+    }
+    public void getCommonTermines(Long chatId){
+        telegramBot.execute(new SendMessage(chatId,commonTerms));
+    }
 }

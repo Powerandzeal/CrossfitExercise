@@ -49,8 +49,8 @@ public class TelegramBotService {
         InlineKeyboardButton buttonGlossary = new InlineKeyboardButton("Кроссфит глоссарий");
         buttonGlossary.callbackData(GET_GLOSSARY);
 //
-        InlineKeyboardButton buttonGetProgramWithoutImplements1 = new InlineKeyboardButton("Комплекс упражнений с собственным весом");
-        buttonGetProgramWithoutImplements1.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
+//        InlineKeyboardButton buttonGetProgramWithoutImplements1 = new InlineKeyboardButton("Комплекс упражнений с собственным весом");
+//        buttonGetProgramWithoutImplements1.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
 
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         keyboard.addRow(button1);
@@ -64,6 +64,27 @@ public class TelegramBotService {
 //        keyboard.addRow(buttonGetProgramWithoutImplements1);
 //        keyboard.addRow(buttonGlossary);
 
+        message.replyMarkup(keyboard);
+        telegramBot.execute(message);
+    }
+
+    public void glossaryMenu(Long chatId) {
+        SendMessage message = new SendMessage(chatId, "Данный раздел поможет тебе ответить на твои вопросы" );
+
+
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Разновидности программ");
+        button1.callbackData(VARIANTS_PROGRAM);
+
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Общие термины");
+        button2.callbackData(GENERAL_TERMINS);
+//
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Разновидности упражнений");
+        button3.callbackData(VARIANTS_EXERCISE);
+
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        keyboard.addRow(button1);
+        keyboard.addRow(button3);
+        keyboard.addRow(button2);
         message.replyMarkup(keyboard);
         telegramBot.execute(message);
     }
