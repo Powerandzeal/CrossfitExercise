@@ -32,30 +32,35 @@ public class TelegramBotService {
 
     public void firstMenu(Long chatId) { // кнопки этапа 1, кейсы между 1 и 2
 
-        SendMessage message = new SendMessage(chatId, "Спасибо что пользуешься ботом");
+        SendMessage message = new SendMessage(chatId, "Выбери интересующий комплекс и нажми на кнопку" );
 
-        InlineKeyboardButton buttonGetExercisePro = new InlineKeyboardButton("Получить программу уровень pro");
-        buttonGetExercisePro.callbackData(GET_PROGRAM_LEVEL_PRO);
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Комплекс упражнений уровень pro");
+        button1.callbackData(GET_PROGRAM_LEVEL_PRO);
 
-        InlineKeyboardButton buttonGetMotivate = new InlineKeyboardButton("Получить мотивацию");
-        buttonGetMotivate.callbackData(GET_MOTIVATION);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Получить совет");
+        button2.callbackData(GET_MOTIVATION);
 //
-        InlineKeyboardButton buttonGetExerciseBeginner = new InlineKeyboardButton("Комплекс упражнений уровень beginner");
-        buttonGetExerciseBeginner.callbackData(GET_PROGRAM_LEVEL_BEGINNER);
+        InlineKeyboardButton button3 = new InlineKeyboardButton("Комплекс упражнений уровень beginner");
+        button3.callbackData(GET_PROGRAM_LEVEL_BEGINNER);
 
-//        InlineKeyboardButton buttonGlossary = new InlineKeyboardButton("Кроссфит глоссарий");
-//        buttonGlossary.callbackData(GET_GLOSSARY);
+//        InlineKeyboardButton button4 = new InlineKeyboardButton("без экипы");
+//        button4.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
+
+        InlineKeyboardButton buttonGlossary = new InlineKeyboardButton("Кроссфит глоссарий");
+        buttonGlossary.callbackData(GET_GLOSSARY);
 //
-//        InlineKeyboardButton buttonGetProgramWithoutImplements = new InlineKeyboardButton("Получить программу тренеровки " +
-//                "без оборудования с собственным весом");
-//        buttonGetProgramWithoutImplements.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
+        InlineKeyboardButton buttonGetProgramWithoutImplements1 = new InlineKeyboardButton("Комплекс упражнений с собственным весом");
+        buttonGetProgramWithoutImplements1.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
 
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        keyboard.addRow(buttonGetExercisePro);
-        keyboard.addRow(buttonGetExerciseBeginner);
-        keyboard.addRow(buttonGetMotivate);
+        keyboard.addRow(button1);
+        keyboard.addRow(button3);
+        keyboard.addRow(button2);
+//        keyboard.addRow(button4);
+        keyboard.addRow(buttonGlossary);
+//        keyboard.addRow(buttonGetProgramWithoutImplements1);
 
-//        keyboard.addRow(buttonGetProgramWithoutImplements);
+//        keyboard.addRow(buttonGetProgramWithoutImplements1);
 //        keyboard.addRow(buttonGlossary);
 
         message.replyMarkup(keyboard);
