@@ -43,8 +43,8 @@ public class TelegramBotService {
         InlineKeyboardButton button3 = new InlineKeyboardButton("Комплекс упражнений уровень beginner");
         button3.callbackData(GET_PROGRAM_LEVEL_BEGINNER);
 
-//        InlineKeyboardButton button4 = new InlineKeyboardButton("без экипы");
-//        button4.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
+        InlineKeyboardButton button4 = new InlineKeyboardButton("Комплекс упражнений без инвентаря");
+        button4.callbackData(PROGRAM_WITHOUT);
 
         InlineKeyboardButton buttonGlossary = new InlineKeyboardButton("Кроссфит глоссарий");
         buttonGlossary.callbackData(GET_GLOSSARY);
@@ -55,8 +55,9 @@ public class TelegramBotService {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         keyboard.addRow(button1);
         keyboard.addRow(button3);
+        keyboard.addRow(button4);
         keyboard.addRow(button2);
-//        keyboard.addRow(button4);
+
         keyboard.addRow(buttonGlossary);
 //        keyboard.addRow(buttonGetProgramWithoutImplements1);
 

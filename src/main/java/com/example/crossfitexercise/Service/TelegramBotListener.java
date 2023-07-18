@@ -28,6 +28,7 @@ public class TelegramBotListener implements UpdatesListener {
     public static final String GET_GLOSSARY = "Открыть кроссфит глоссарий";
     public static final String GET_PROGRAM_LEVEL_BEGINNER = "Получить программу уровень beginner";
     public static final String GET_PROGRAM_WITHOUT_IMPLEMENTS = "Получить программу тренеровки без оборудования с собственным весом";
+    public static final String PROGRAM_WITHOUT = "Тренеровка без экипы";
 
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotListener.class);
@@ -129,15 +130,17 @@ public int process(List<Update> updates) {
                     case GET_PROGRAM_LEVEL_BEGINNER:
                         telegramProgramService.getRandomProgramForBeginners(chatId);
                         break;
-                    case GET_PROGRAM_WITHOUT_IMPLEMENTS:
-                        telegramProgramService.getRandomWithoutImplements(chatId);
-                        break;
+//                    case GET_PROGRAM_WITHOUT_IMPLEMENTS:
+//                        telegramProgramService.getRandomWithoutImplements(chatId);
+//                        break;
                     case GET_MOTIVATION:
                         telegramMotivationService.getRandomMotivate(chatId);
                         break;
                     case GET_GLOSSARY:
                         telegramProgramService.programAnderson(chatId);
                         break;
+                    case PROGRAM_WITHOUT:
+                        telegramProgramService.getRandomWithoutImplements(chatId);
 
                 }
             }
