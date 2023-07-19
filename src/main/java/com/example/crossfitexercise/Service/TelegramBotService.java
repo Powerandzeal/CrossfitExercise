@@ -13,10 +13,12 @@ public class TelegramBotService {
 
 
     private final TelegramBot telegramBot;
+    private final TelegramGlossaryService telegramGlossaryService;
 
 
-    public TelegramBotService(TelegramBot telegramBot) {
+    public TelegramBotService(TelegramBot telegramBot, TelegramGlossaryService telegramGlossaryService) {
         this.telegramBot = telegramBot;
+        this.telegramGlossaryService = telegramGlossaryService;
     }
 
     public void sendHello(Long chatId) {
@@ -32,7 +34,7 @@ public class TelegramBotService {
 
     public void firstMenu(Long chatId) { // кнопки этапа 1, кейсы между 1 и 2
 
-        SendMessage message = new SendMessage(chatId, "Выбери интересующий комплекс и нажми на кнопку" );
+        SendMessage message = new SendMessage(chatId, "Выбери интересующий комплекс и нажми на кнопку");
 
         InlineKeyboardButton button1 = new InlineKeyboardButton("Комплекс упражнений уровень pro");
         button1.callbackData(GET_PROGRAM_LEVEL_PRO);
@@ -69,7 +71,7 @@ public class TelegramBotService {
     }
 
     public void glossaryMenu(Long chatId) {
-        SendMessage message = new SendMessage(chatId, "Данный раздел поможет тебе ответить на твои вопросы" );
+        SendMessage message = new SendMessage(chatId, "Данный раздел поможет тебе ответить на твои вопросы");
 
 
         InlineKeyboardButton button1 = new InlineKeyboardButton("Разновидности программ");
@@ -88,4 +90,24 @@ public class TelegramBotService {
         message.replyMarkup(keyboard);
         telegramBot.execute(message);
     }
+
+    public void glossaryExercisePagination(Long chatId) {
+        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке");
+
+        InlineKeyboardButton rightButton = new InlineKeyboardButton("Вперед");
+        rightButton.callbackData(RIGHT_BUTTON);
+
+        InlineKeyboardButton leftButton = new InlineKeyboardButton("Назад");
+        leftButton.callbackData(LEFT_BUTTON);
+
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        keyboard.addRow(leftButton, rightButton);
+        message.replyMarkup(keyboard);
+        telegramBot.execute(message);
+    }
+//    public void glossaryExercisePagination(Long chatId) {
+//        telegramGlossaryService.sendMotionsExercisePage(chatId, currentPage);
+//    }
+
+
 }

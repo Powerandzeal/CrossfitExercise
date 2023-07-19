@@ -34,6 +34,10 @@ public class TelegramBotListener implements UpdatesListener {
     public static final String GENERAL_TERMINS = "Общие термины";
     public static final String VARIANTS_EXERCISE = "Разновидности упражнений";
 
+    public static final String LEFT_BUTTON = "Кнопка влево";
+    public static final String RIGHT_BUTTON = "Кнопка вправо";
+
+
 
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotListener.class);
@@ -60,114 +64,118 @@ public class TelegramBotListener implements UpdatesListener {
     }
 
 
-//    @Override
-//    public int process(List<Update> updates) {
-//
-//        try {
-//            updates.forEach(update -> {
-//
-//
-//                        logger.info("Processing update: {}", update);
-//                        //тут две кнопки приют кошки или собаки если
-//
-//
-//                        if (update.callbackQuery() != null && update.message() == null) {
-//                            // обработка этапа 0
-//
-//                            chatId = update.callbackQuery().message().chat().id();
-//                            CallbackQuery callbackQuery = update.callbackQuery();
-//                            String data = callbackQuery.data();
-//
-//
-//                            try {
-//                                System.out.println(update.message().text());
-//
-//                            } catch (Exception e) {
-//                                System.out.println("Ошибка");
-//                            }
-//
-////                            System.out.println(update.message().text());
-////                            System.out.println(data);
-//                            switch (data) {
-//
-//                                case START -> telegramBotService.firstMenu(chatId);
-//                                case GET_PROGRAM_LEVEL_PRO -> telegramProgramService.getRandomProgramForPro(chatId);
-//                                case GET_PROGRAM_LEVEL_BEGINNER -> telegramProgramService.getRandomProgramForBeginners(chatId);
-//                                case GET_PROGRAM_WITHOUT_IMPLEMENTS -> telegramProgramService.getRandomWithoutImplements(chatId);
-//                                case GET_MOTIVATION -> telegramMotivationService.getRandomMotivate(chatId);
-//                                case GET_GLOSSARY -> telegramProgramService.programAnderson(chatId);
-//
-//                            }
-//
-//                        }
-//                        if (update.message() != null) {
-//                            chatId = update.message().chat().id();
-//                            String message = update.message().text();
-//                            if (START.equals(message)) {
-//                                telegramBotService.firstMenu(chatId);
-//                            }
-//
-//                        }
-//                    }
-//            );
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return UpdatesListener.CONFIRMED_UPDATES_ALL;
-//    }
-@Override
-public int process(List<Update> updates) {
-    try {
-        updates.forEach(update -> {
-            logger.info("Processing update: {}", update);
+    @Override
+    public int process(List<Update> updates) {
 
-            if (update.callbackQuery() != null && update.message() == null) {
-                chatId = update.callbackQuery().message().chat().id();
-                CallbackQuery callbackQuery = update.callbackQuery();
-                String data = callbackQuery.data();
-
-                switch (data) {
-                    case VARIANTS_PROGRAM:
-                        telegramGlossaryService.getProgram(chatId);
-                    case GENERAL_TERMINS:
-                        telegramGlossaryService.getCommonTermines(chatId);
-                    case START:
-                        telegramBotService.firstMenu(chatId);
-                        break;
-                    case GET_PROGRAM_LEVEL_PRO:
-                        telegramProgramService.getRandomProgramForPro(chatId);
-                        break;
-                    case GET_PROGRAM_LEVEL_BEGINNER:
-                        telegramProgramService.getRandomProgramForBeginners(chatId);
-                        break;
-//                    case GET_PROGRAM_WITHOUT_IMPLEMENTS:
-//                        telegramProgramService.getRandomWithoutImplements(chatId);
-//                        break;
-                    case GET_MOTIVATION:
-                        telegramMotivationService.getRandomMotivate(chatId);
-                        break;
-                    case GET_GLOSSARY:
-                        telegramBotService.glossaryMenu(chatId);
-                        break;
-                    case PROGRAM_WITHOUT:
-                        telegramProgramService.getRandomWithoutImplements(chatId);
+        try {
+            updates.forEach(update -> {
 
 
-                }
-            }
+                        logger.info("Processing update: {}", update);
+                        //тут две кнопки приют кошки или собаки если
 
-            if (update.message() != null) {
-                chatId = update.message().chat().id();
-                String message = update.message().text();
-                if (START.equals(message)) {
-                    telegramBotService.firstMenu(chatId);
-                }
-            }
-        });
-    } catch (Exception e) {
-        e.printStackTrace();
+
+                        if (update.callbackQuery() != null && update.message() == null) {
+                            // обработка этапа 0
+
+                            chatId = update.callbackQuery().message().chat().id();
+                            CallbackQuery callbackQuery = update.callbackQuery();
+                            String data = callbackQuery.data();
+
+
+                            try {
+                                System.out.println(update.message().text());
+
+                            } catch (Exception e) {
+                                System.out.println("Ошибка");
+                            }
+
+//                            System.out.println(update.message().text());
+//                            System.out.println(data);
+                            switch (data) {
+
+                                case START -> telegramBotService.firstMenu(chatId);
+                                case GET_PROGRAM_LEVEL_PRO -> telegramProgramService.getRandomProgramForPro(chatId);
+                                case GET_PROGRAM_LEVEL_BEGINNER -> telegramProgramService.getRandomProgramForBeginners(chatId);
+                                case GET_MOTIVATION -> telegramMotivationService.getRandomMotivate(chatId);
+                                case PROGRAM_WITHOUT -> telegramProgramService.getRandomWithoutImplements(chatId);
+                                case GET_GLOSSARY -> telegramBotService.glossaryMenu(chatId);
+                                case GENERAL_TERMINS -> telegramGlossaryService.getCommonTermines(chatId);
+                                case VARIANTS_PROGRAM -> telegramGlossaryService.getProgram(chatId);
+                                case VARIANTS_EXERCISE -> telegramBotService.glossaryExercisePagination(chatId);
+
+
+                            }
+
+                        }
+                        if (update.message() != null) {
+                            chatId = update.message().chat().id();
+                            String message = update.message().text();
+                            if (START.equals(message)) {
+                                telegramBotService.firstMenu(chatId);
+                            }
+
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-    return UpdatesListener.CONFIRMED_UPDATES_ALL;
+//@Override
+//public int process(List<Update> updates) {
+//    try {
+//        updates.forEach(update -> {
+//            logger.info("Processing update: {}", update);
+//
+//            if (update.callbackQuery() != null && update.message() == null) {
+//                chatId = update.callbackQuery().message().chat().id();
+//                CallbackQuery callbackQuery = update.callbackQuery();
+//                String data = callbackQuery.data();
+//
+//                switch (data) {
+//                    case VARIANTS_PROGRAM:
+//                        telegramGlossaryService.getProgram(chatId);
+//                    case GENERAL_TERMINS:
+//                        telegramGlossaryService.getCommonTermines(chatId);
+//                    case START:
+//                        telegramBotService.firstMenu(chatId);
+//                        break;
+//                    case GET_PROGRAM_LEVEL_PRO:
+//                        telegramProgramService.getRandomProgramForPro(chatId);
+//                        break;
+//                    case GET_PROGRAM_LEVEL_BEGINNER:
+//                        telegramProgramService.getRandomProgramForBeginners(chatId);
+//                        break;
+////                    case GET_PROGRAM_WITHOUT_IMPLEMENTS:
+////                        telegramProgramService.getRandomWithoutImplements(chatId);
+////                        break;
+//                    case GET_MOTIVATION:
+//                        telegramMotivationService.getRandomMotivate(chatId);
+//                        break;
+//                    case GET_GLOSSARY:
+//                        telegramBotService.glossaryMenu(chatId);
+//                        break;
+//                    case PROGRAM_WITHOUT:
+//                        telegramProgramService.getRandomWithoutImplements(chatId);
+//
+//
+//                }
+//            }
+//
+//            if (update.message() != null) {
+//                chatId = update.message().chat().id();
+//                String message = update.message().text();
+//                if (START.equals(message)) {
+//                    telegramBotService.firstMenu(chatId);
+//                }
+//            }
+//        });
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
+//    return UpdatesListener.CONFIRMED_UPDATES_ALL;
 }
 
 
@@ -176,5 +184,4 @@ public int process(List<Update> updates) {
 
 
 
-}
 
