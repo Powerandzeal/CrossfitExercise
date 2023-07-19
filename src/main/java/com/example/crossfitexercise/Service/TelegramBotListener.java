@@ -110,13 +110,13 @@ public class TelegramBotListener implements UpdatesListener {
                             if (data.equals(RIGHT_BUTTON)) {
                                 telegramBotService.incrementCurrentPage();
 
-//                                telegramBotService.glossaryExercisePagination(chatId);
+                                telegramBotService.glossaryExercisePagination(chatId);
 //                                telegramBot.execute(new SendMessage(chatId,"нажал на правую кнопку"));
 
 //                                telegramGlossaryService.sendMotionsExercisePage(chatId, telegramGlossaryService.getCurrentPage());
                             } else if (data.equals(LEFT_BUTTON)) {
                                 telegramBotService.decrementCurrentPage();
-//                                telegramBotService.glossaryExercisePagination(chatId);
+                                telegramBotService.glossaryExercisePagination(chatId);
 //                                telegramBot.execute(new SendMessage(chatId,"нажал на левую кнопку"));
 //                                telegramGlossaryService.sendMotionsExercisePage(chatId, telegramGlossaryService.getCurrentPage());
                             }

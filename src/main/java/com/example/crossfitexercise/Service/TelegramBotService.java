@@ -94,11 +94,12 @@ public class TelegramBotService {
         telegramBot.execute(message);
     }
 
-//    public void glossaryExercisePagination(Long chatId) { работает но не правильно
+//    public void glossaryExercisePagination(Long chatId) {
 ////        int currentPage = 0;
 //        int page1 = 1;
 //        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке" +"\n"
 //        + telegramGlossaryService.getList().get(currentPage));
+//
 //
 //        InlineKeyboardButton rightButton = new InlineKeyboardButton("Вперед");
 //        rightButton.callbackData(RIGHT_BUTTON);
@@ -119,9 +120,10 @@ public class TelegramBotService {
 
     private int messageId = 0;
 
+
     public void glossaryExercisePagination(Long chatId) {
-        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке" +"\n"
-                + telegramGlossaryService.getList().get(currentPage));
+        String messageText = "Упражнения идут в алфавитном порядке" + "\n"
+                + telegramGlossaryService.getList().get(currentPage);
 
         InlineKeyboardButton rightButton = new InlineKeyboardButton("Вперед");
         rightButton.callbackData(RIGHT_BUTTON);
@@ -134,17 +136,20 @@ public class TelegramBotService {
 
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         keyboard.addRow(leftButton, page, rightButton);
-        message.replyMarkup(keyboard);
 
         if (messageId != 0) {
-            EditMessageText editMessageText = new EditMessageText(chatId, messageId, message());
+            EditMessageText editMessageText = new EditMessageText(chatId, messageId, messageText);
             editMessageText.replyMarkup(keyboard);
             telegramBot.execute(editMessageText);
         } else {
-            SendResponse sentMessage = telegramBot.execute(message);
-            messageId = sentMessage.message().messageId();
+            SendMessage message = new SendMessage(chatId, messageText);
+            message.replyMarkup(keyboard);
+            SendResponse sendResponse = telegramBot.execute(message);
+            messageId = sendResponse.message().messageId();
         }
     }
+
+
 
 
     public void sendExercise(Long chatId) {
