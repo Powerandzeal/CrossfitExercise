@@ -3,7 +3,9 @@ package com.example.crossfitexercise.Service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import org.springframework.stereotype.Service;
 
 import static com.example.crossfitexercise.Service.TelegramBotListener.*;
@@ -15,6 +17,7 @@ public class TelegramBotService {
     private final TelegramBot telegramBot;
     private final TelegramGlossaryService telegramGlossaryService;
 
+    private int currentPage =0;
 
     public TelegramBotService(TelegramBot telegramBot, TelegramGlossaryService telegramGlossaryService) {
         this.telegramBot = telegramBot;
@@ -91,8 +94,34 @@ public class TelegramBotService {
         telegramBot.execute(message);
     }
 
+//    public void glossaryExercisePagination(Long chatId) { работает но не правильно
+////        int currentPage = 0;
+//        int page1 = 1;
+//        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке" +"\n"
+//        + telegramGlossaryService.getList().get(currentPage));
+//
+//        InlineKeyboardButton rightButton = new InlineKeyboardButton("Вперед");
+//        rightButton.callbackData(RIGHT_BUTTON);
+//
+//        InlineKeyboardButton leftButton = new InlineKeyboardButton("Назад");
+//        leftButton.callbackData(LEFT_BUTTON);
+//
+//        InlineKeyboardButton page = new InlineKeyboardButton(String.valueOf(currentPage+1));
+//        page.callbackData(PAGE_BUTTON);
+//
+//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+//        keyboard.addRow(leftButton,
+//                page,
+//                rightButton);
+//        message.replyMarkup(keyboard);
+//        telegramBot.execute(message);
+//    }
+
+    private int messageId = 0;
+
     public void glossaryExercisePagination(Long chatId) {
-        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке");
+        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке" +"\n"
+                + telegramGlossaryService.getList().get(currentPage));
 
         InlineKeyboardButton rightButton = new InlineKeyboardButton("Вперед");
         rightButton.callbackData(RIGHT_BUTTON);
@@ -100,14 +129,38 @@ public class TelegramBotService {
         InlineKeyboardButton leftButton = new InlineKeyboardButton("Назад");
         leftButton.callbackData(LEFT_BUTTON);
 
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        keyboard.addRow(leftButton, rightButton);
-        message.replyMarkup(keyboard);
-        telegramBot.execute(message);
-    }
-//    public void glossaryExercisePagination(Long chatId) {
-//        telegramGlossaryService.sendMotionsExercisePage(chatId, currentPage);
-//    }
+        InlineKeyboardButton page = new InlineKeyboardButton(String.valueOf(currentPage + 1));
+        page.callbackData(PAGE_BUTTON);
 
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        keyboard.addRow(leftButton, page, rightButton);
+        message.replyMarkup(keyboard);
+
+        if (messageId != 0) {
+            EditMessageText editMessageText = new EditMessageText(chatId, messageId, message());
+            editMessageText.replyMarkup(keyboard);
+            telegramBot.execute(editMessageText);
+        } else {
+            SendResponse sentMessage = telegramBot.execute(message);
+            messageId = sentMessage.message().messageId();
+        }
+    }
+
+
+    public void sendExercise(Long chatId) {
+        int page = 1;
+        int size = telegramGlossaryService.getSizeList();
+    }
+
+    public void incrementCurrentPage() {
+        currentPage++;
+    }
+
+    public void decrementCurrentPage() {
+        currentPage--;
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+    }
 
 }

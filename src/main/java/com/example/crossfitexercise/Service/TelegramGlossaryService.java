@@ -190,32 +190,44 @@ public void incrementCurrentPage() {
             currentPage = 1;
         }
     }
-public void sendMotionsExercisePage(Long chatId, int page) {
-    int startIndex = (page - 1) * pageSize;
-    int endIndex = Math.min(startIndex + pageSize, mainMotionsExercise.size());
+//public void sendMotionsExercisePage(Long chatId, int page) {
+//    int startIndex = (page - 1) * pageSize;
+//    int endIndex = Math.min(startIndex + pageSize, mainMotionsExercise.size());
+//
+//    StringBuilder sb = new StringBuilder();
+//    for (int i = startIndex; i < endIndex; i++) {
+//        sb.append(mainMotionsExercise.get(i)).append("\n\n");
+//    }
+//
+//    SendMessage message = new SendMessage(chatId, sb.toString());
+//
+//    InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+//    InlineKeyboardButton prevButton = new InlineKeyboardButton("Назад");
+//    prevButton.callbackData(LEFT_BUTTON);
+//    InlineKeyboardButton nextButton = new InlineKeyboardButton("Вперед");
+//    nextButton.callbackData(RIGHT_BUTTON);
+//
+//    if (page > 1) {
+//        keyboard.addRow(prevButton);
+//    }
+//    if (endIndex < mainMotionsExercise.size()) {
+//        keyboard.addRow(nextButton);
+//    }
+//
+//    message.replyMarkup(keyboard);
+//    telegramBot.execute(message);
+//}
 
-    StringBuilder sb = new StringBuilder();
-    for (int i = startIndex; i < endIndex; i++) {
-        sb.append(mainMotionsExercise.get(i)).append("\n\n");
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    SendMessage message = new SendMessage(chatId, sb.toString());
-
-    InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-    InlineKeyboardButton prevButton = new InlineKeyboardButton("Назад");
-    prevButton.callbackData(LEFT_BUTTON);
-    InlineKeyboardButton nextButton = new InlineKeyboardButton("Вперед");
-    nextButton.callbackData(RIGHT_BUTTON);
-
-    if (page > 1) {
-        keyboard.addRow(prevButton);
-    }
-    if (endIndex < mainMotionsExercise.size()) {
-        keyboard.addRow(nextButton);
+    public int getSizeList() {
+        return mainMotionsExercise.size();
     }
 
-    message.replyMarkup(keyboard);
-    telegramBot.execute(message);
-}
+    public List<String> getList() {
+        return mainMotionsExercise;
+    }
 
 }

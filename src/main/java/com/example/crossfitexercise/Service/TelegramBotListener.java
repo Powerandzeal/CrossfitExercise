@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public class TelegramBotListener implements UpdatesListener {
 
     public static final String LEFT_BUTTON = "Кнопка влево";
     public static final String RIGHT_BUTTON = "Кнопка вправо";
+    public static final String PAGE_BUTTON = "Страница";
 
 
 
@@ -103,9 +105,22 @@ public class TelegramBotListener implements UpdatesListener {
                                 case GENERAL_TERMINS -> telegramGlossaryService.getCommonTermines(chatId);
                                 case VARIANTS_PROGRAM -> telegramGlossaryService.getProgram(chatId);
                                 case VARIANTS_EXERCISE -> telegramBotService.glossaryExercisePagination(chatId);
-
-
+//                                case RIGHT_BUTTON ->
                             }
+                            if (data.equals(RIGHT_BUTTON)) {
+                                telegramBotService.incrementCurrentPage();
+
+//                                telegramBotService.glossaryExercisePagination(chatId);
+//                                telegramBot.execute(new SendMessage(chatId,"нажал на правую кнопку"));
+
+//                                telegramGlossaryService.sendMotionsExercisePage(chatId, telegramGlossaryService.getCurrentPage());
+                            } else if (data.equals(LEFT_BUTTON)) {
+                                telegramBotService.decrementCurrentPage();
+//                                telegramBotService.glossaryExercisePagination(chatId);
+//                                telegramBot.execute(new SendMessage(chatId,"нажал на левую кнопку"));
+//                                telegramGlossaryService.sendMotionsExercisePage(chatId, telegramGlossaryService.getCurrentPage());
+                            }
+
 
                         }
                         if (update.message() != null) {
