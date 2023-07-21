@@ -92,8 +92,7 @@ public class TelegramBotListener implements UpdatesListener {
                                 System.out.println("Ошибка");
                             }
 
-//                            System.out.println(update.message().text());
-//                            System.out.println(data);
+
                             switch (data) {
 
                                 case START -> telegramBotService.firstMenu(chatId);
@@ -105,20 +104,17 @@ public class TelegramBotListener implements UpdatesListener {
                                 case GENERAL_TERMINS -> telegramGlossaryService.getCommonTermines(chatId);
                                 case VARIANTS_PROGRAM -> telegramGlossaryService.getProgram(chatId);
                                 case VARIANTS_EXERCISE -> telegramBotService.glossaryExercisePagination(chatId);
-//                                case RIGHT_BUTTON ->
+
                             }
                             if (data.equals(RIGHT_BUTTON)) {
                                 telegramBotService.incrementCurrentPage();
 
                                 telegramBotService.glossaryExercisePagination(chatId);
-//                                telegramBot.execute(new SendMessage(chatId,"нажал на правую кнопку"));
 
-//                                telegramGlossaryService.sendMotionsExercisePage(chatId, telegramGlossaryService.getCurrentPage());
                             } else if (data.equals(LEFT_BUTTON)) {
                                 telegramBotService.decrementCurrentPage();
                                 telegramBotService.glossaryExercisePagination(chatId);
-//                                telegramBot.execute(new SendMessage(chatId,"нажал на левую кнопку"));
-//                                telegramGlossaryService.sendMotionsExercisePage(chatId, telegramGlossaryService.getCurrentPage());
+
                             }
 
 

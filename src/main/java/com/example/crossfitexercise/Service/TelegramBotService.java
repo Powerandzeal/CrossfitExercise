@@ -10,33 +10,44 @@ import org.springframework.stereotype.Service;
 
 import static com.example.crossfitexercise.Service.TelegramBotListener.*;
 
+/**
+ * Сервис Telegram-бота для кроссфит тренировок.
+ */
 @Service
 public class TelegramBotService {
 
-
     private final TelegramBot telegramBot;
     private final TelegramGlossaryService telegramGlossaryService;
+    private int currentPage = 0;
+    private int messageId = 0;
 
-    private int currentPage =0;
-
+    /**
+     * Конструктор класса TelegramBotService.
+     *
+     * @param telegramBot             экземпляр TelegramBot для взаимодействия с Telegram API.
+     * @param telegramGlossaryService сервис для работы с глоссарием.
+     */
     public TelegramBotService(TelegramBot telegramBot, TelegramGlossaryService telegramGlossaryService) {
         this.telegramBot = telegramBot;
         this.telegramGlossaryService = telegramGlossaryService;
     }
 
+    /**
+     * Отправляет приветственное сообщение пользователю.
+     *
+     * @param chatId идентификатор чата.
+     */
     public void sendHello(Long chatId) {
         SendMessage message = new SendMessage(chatId, "Я работаю");
         telegramBot.execute(message);
     }
 
-//    public InlineKeyboardButton getProgram() {  // метод записи данных
-//        InlineKeyboardButton button = new InlineKeyboardButton("записать данные");
-//        button.callbackData(GET_PROGRAM_LEVEL_PRO);
-//        return button;
-//    }
-
-    public void firstMenu(Long chatId) { // кнопки этапа 1, кейсы между 1 и 2
-
+    /**
+     * Отображает главное меню с кнопками выбора комплексов тренировок.
+     *
+     * @param chatId идентификатор чата.
+     */
+    public void firstMenu(Long chatId) {
         SendMessage message = new SendMessage(chatId, "Выбери интересующий комплекс и нажми на кнопку");
 
         InlineKeyboardButton button1 = new InlineKeyboardButton("Комплекс упражнений уровень pro");
@@ -44,7 +55,7 @@ public class TelegramBotService {
 
         InlineKeyboardButton button2 = new InlineKeyboardButton("Получить совет");
         button2.callbackData(GET_MOTIVATION);
-//
+
         InlineKeyboardButton button3 = new InlineKeyboardButton("Комплекс упражнений уровень beginner");
         button3.callbackData(GET_PROGRAM_LEVEL_BEGINNER);
 
@@ -53,36 +64,32 @@ public class TelegramBotService {
 
         InlineKeyboardButton buttonGlossary = new InlineKeyboardButton("Кроссфит глоссарий");
         buttonGlossary.callbackData(GET_GLOSSARY);
-//
-//        InlineKeyboardButton buttonGetProgramWithoutImplements1 = new InlineKeyboardButton("Комплекс упражнений с собственным весом");
-//        buttonGetProgramWithoutImplements1.callbackData(GET_PROGRAM_WITHOUT_IMPLEMENTS);
 
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         keyboard.addRow(button1);
         keyboard.addRow(button3);
         keyboard.addRow(button4);
         keyboard.addRow(button2);
-
         keyboard.addRow(buttonGlossary);
-//        keyboard.addRow(buttonGetProgramWithoutImplements1);
-
-//        keyboard.addRow(buttonGetProgramWithoutImplements1);
-//        keyboard.addRow(buttonGlossary);
 
         message.replyMarkup(keyboard);
         telegramBot.execute(message);
     }
 
+    /**
+     * Отображает меню глоссария с кнопками выбора разделов.
+     *
+     * @param chatId идентификатор чата.
+     */
     public void glossaryMenu(Long chatId) {
         SendMessage message = new SendMessage(chatId, "Данный раздел поможет тебе ответить на твои вопросы");
-
 
         InlineKeyboardButton button1 = new InlineKeyboardButton("Разновидности программ");
         button1.callbackData(VARIANTS_PROGRAM);
 
         InlineKeyboardButton button2 = new InlineKeyboardButton("Общие термины");
         button2.callbackData(GENERAL_TERMINS);
-//
+
         InlineKeyboardButton button3 = new InlineKeyboardButton("Разновидности упражнений");
         button3.callbackData(VARIANTS_EXERCISE);
 
@@ -90,37 +97,16 @@ public class TelegramBotService {
         keyboard.addRow(button1);
         keyboard.addRow(button3);
         keyboard.addRow(button2);
+
         message.replyMarkup(keyboard);
         telegramBot.execute(message);
     }
 
-//    public void glossaryExercisePagination(Long chatId) {
-////        int currentPage = 0;
-//        int page1 = 1;
-//        SendMessage message = new SendMessage(chatId, "Упражнения идут в алфавитном порядке" +"\n"
-//        + telegramGlossaryService.getList().get(currentPage));
-//
-//
-//        InlineKeyboardButton rightButton = new InlineKeyboardButton("Вперед");
-//        rightButton.callbackData(RIGHT_BUTTON);
-//
-//        InlineKeyboardButton leftButton = new InlineKeyboardButton("Назад");
-//        leftButton.callbackData(LEFT_BUTTON);
-//
-//        InlineKeyboardButton page = new InlineKeyboardButton(String.valueOf(currentPage+1));
-//        page.callbackData(PAGE_BUTTON);
-//
-//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-//        keyboard.addRow(leftButton,
-//                page,
-//                rightButton);
-//        message.replyMarkup(keyboard);
-//        telegramBot.execute(message);
-//    }
-
-    private int messageId = 0;
-
-
+    /**
+     * Отображает список упражнений с пагинацией.
+     *
+     * @param chatId идентификатор чата.
+     */
     public void glossaryExercisePagination(Long chatId) {
         String messageText = "Упражнения идут в алфавитном порядке" + "\n"
                 + telegramGlossaryService.getList().get(currentPage);
@@ -149,23 +135,21 @@ public class TelegramBotService {
         }
     }
 
-
-
-
-    public void sendExercise(Long chatId) {
-        int page = 1;
-        int size = telegramGlossaryService.getSizeList();
-    }
-
+    /**
+     * Увеличивает текущую страницу пагинации.
+     */
     public void incrementCurrentPage() {
         currentPage++;
     }
 
+    /**
+     * Уменьшает текущую страницу пагинации.
+     */
     public void decrementCurrentPage() {
         currentPage--;
-        if (currentPage < 1) {
-            currentPage = 1;
+        if (currentPage < 0) {
+            currentPage = 0;
         }
     }
-
 }
+

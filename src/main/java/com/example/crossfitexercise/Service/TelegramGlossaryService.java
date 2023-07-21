@@ -1,8 +1,6 @@
 package com.example.crossfitexercise.Service;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.crossfitexercise.Service.TelegramBotListener.LEFT_BUTTON;
-import static com.example.crossfitexercise.Service.TelegramBotListener.RIGHT_BUTTON;
-
 @Service
 public class TelegramGlossaryService {
 
-    private final int pageSize = 5; // Количество элементов на одной странице
-    private int currentPage = 1;
    private final TelegramBot telegramBot;
     private final String program =
             "Разновидости программ:\n" +
@@ -146,86 +139,29 @@ public class TelegramGlossaryService {
         this.telegramBot = telegramBot;
     }
 
-    public void getProgram (Long chatId){
-        telegramBot.execute(new SendMessage(chatId,program));
-    }
-    public void getCommonTermines(Long chatId){
-        telegramBot.execute(new SendMessage(chatId,commonTerms));
-    }
-
-//    public void sendMotionsExercisePage(Long chatId, int page) {
-//        int startIndex = (page - 1) * pageSize;
-//        int endIndex = Math.min(startIndex + pageSize, mainMotionsExercise.size());
-//
-//        StringBuilder sb = new StringBuilder();
-//        for (int i = startIndex; i < endIndex; i++) {
-//            sb.append(mainMotionsExercise.get(i)).append("\n\n");
-//        }
-//
-//        SendMessage message = new SendMessage(chatId, sb.toString());
-//
-//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-//        InlineKeyboardButton prevButton = new InlineKeyboardButton("Назад");
-//        prevButton.callbackData("PREV_PAGE");
-//        InlineKeyboardButton nextButton = new InlineKeyboardButton("Вперед");
-//        nextButton.callbackData("NEXT_PAGE");
-//
-//        if (page > 1) {
-//            keyboard.addRow(prevButton);
-//        }
-//        if (endIndex < mainMotionsExercise.size()) {
-//            keyboard.addRow(nextButton);
-//        }
-//
-//        message.replyMarkup(keyboard);
-//        telegramBot.execute(message);
-//    }
-public void incrementCurrentPage() {
-    currentPage++;
-}
-
-    public void decrementCurrentPage() {
-        currentPage--;
-        if (currentPage < 1) {
-            currentPage = 1;
-        }
-    }
-//public void sendMotionsExercisePage(Long chatId, int page) {
-//    int startIndex = (page - 1) * pageSize;
-//    int endIndex = Math.min(startIndex + pageSize, mainMotionsExercise.size());
-//
-//    StringBuilder sb = new StringBuilder();
-//    for (int i = startIndex; i < endIndex; i++) {
-//        sb.append(mainMotionsExercise.get(i)).append("\n\n");
-//    }
-//
-//    SendMessage message = new SendMessage(chatId, sb.toString());
-//
-//    InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-//    InlineKeyboardButton prevButton = new InlineKeyboardButton("Назад");
-//    prevButton.callbackData(LEFT_BUTTON);
-//    InlineKeyboardButton nextButton = new InlineKeyboardButton("Вперед");
-//    nextButton.callbackData(RIGHT_BUTTON);
-//
-//    if (page > 1) {
-//        keyboard.addRow(prevButton);
-//    }
-//    if (endIndex < mainMotionsExercise.size()) {
-//        keyboard.addRow(nextButton);
-//    }
-//
-//    message.replyMarkup(keyboard);
-//    telegramBot.execute(message);
-//}
-
-    public int getCurrentPage() {
-        return currentPage;
+    /**
+     * Отправляет описание разновидностей программ пользователю.
+     *
+     * @param chatId идентификатор чата.
+     */
+    public void getProgram(Long chatId) {
+        telegramBot.execute(new SendMessage(chatId, program));
     }
 
-    public int getSizeList() {
-        return mainMotionsExercise.size();
+    /**
+     * Отправляет описание общих терминов пользователю.
+     *
+     * @param chatId идентификатор чата.
+     */
+    public void getCommonTermines(Long chatId) {
+        telegramBot.execute(new SendMessage(chatId, commonTerms));
     }
 
+    /**
+     * Возвращает список упражнений из глоссария.
+     *
+     * @return список упражнений.
+     */
     public List<String> getList() {
         return mainMotionsExercise;
     }
